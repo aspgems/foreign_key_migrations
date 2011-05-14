@@ -79,11 +79,11 @@ configuration properties:
 
 ## Dependencies
 
-* RedHill on Rails Core (redhillonrails_core).
+* RedHill on Rails Core (redhillonrails_core) aspgems version.
 
-## See Also
+## NOTE
 
-* Foreign Key Associations (foreign_key_associations).
+* Code was created by harukizaemon(http://github.com/harukizaemon) but is not supported currently by him.
 
 ## License
 
