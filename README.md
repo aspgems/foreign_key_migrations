@@ -96,10 +96,12 @@ Install
 -------
 
 Put this line in your Gemfile:
-  gem 'aspgems-foreign_key_migrations', '~> 2.0.0.beta1', :require => 'foreign_key_migrations'
+
+    gem 'aspgems-foreign_key_migrations', '~> 2.0.0.beta1', :require => 'foreign_key_migrations'
 
 Then bundle:
-  % bundle
+
+    % bundle
 
 Dependencies
 ------------
