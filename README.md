@@ -92,6 +92,15 @@ configuration properties:
 * `config.active_record.table_name_prefix`
 * `config.active_record.table_name_suffix`
 
+Install
+-------
+
+Put this line in your Gemfile:
+  gem 'aspgems-foreign_key_migrations', '~> 2.0.0.beta1', :require => 'foreign_key_migrations'
+
+Then bundle:
+  % bundle
+
 Dependencies
 ------------
 
