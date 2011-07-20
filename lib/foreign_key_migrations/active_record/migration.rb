@@ -29,13 +29,17 @@ module ForeignKeyMigrations::ActiveRecord
       #
       def add_column(table_name, column_name, type, options = {})
         super
-        handle_column_options(table_name, column_name, options)
+        unless ForeignKeyMigrations.disable
+          handle_column_options(table_name, column_name, options)
+        end
       end
 
       def change_column(table_name, column_name, type, options = {})
         super
-        remove_foreign_key_if_exists(table_name, column_name)
-        handle_column_options(table_name, column_name, options)
+        unless ForeignKeyMigrations.disable
+          remove_foreign_key_if_exists(table_name, column_name)
+          handle_column_options(table_name, column_name, options)
+        end
       end
 
       protected

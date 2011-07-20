@@ -27,6 +27,11 @@ module ForeignKeyMigrations
   mattr_accessor :auto_index
   @@auto_index = nil
 
+  # Disable automatic foreign key creation.
+  # Useful for disabling automatic foreign keys in development env
+  # but enabling in test and production.
+  mattr_accessor :disable
+
   # FIXME Not used by now
   def self.setup(&block)
     yield self

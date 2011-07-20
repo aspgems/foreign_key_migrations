@@ -17,16 +17,18 @@ module ForeignKeyMigrations::ActiveRecord::ConnectionAdapters
 
     def column_with_foreign_key_migrations(name, type, options = {})
       column_without_foreign_key_migrations(name, type, options)
-      references = ActiveRecord::Base.references(self.name, name, options)
-      if references
-        ForeignKeyMigrations.set_default_update_and_delete_actions!(options)
-        foreign_key(name, references.first, references.last, options)
-        if index = fkm_index_options(options)
-          # append [column_name, index_options] pair
-          self.indices << [name, ForeignKeyMigrations.options_for_index(index)]
+      unless ForeignKeyMigrations.disable
+        references = ActiveRecord::Base.references(self.name, name, options)
+        if references
+          ForeignKeyMigrations.set_default_update_and_delete_actions!(options)
+          foreign_key(name, references.first, references.last, options)
+          if index = fkm_index_options(options)
+            # append [column_name, index_options] pair
+            self.indices << [name, ForeignKeyMigrations.options_for_index(index)]
+          end
+        elsif options[:index]
+          self.indices << [name, ForeignKeyMigrations.options_for_index(options[:index])]
         end
-      elsif options[:index]
-        self.indices << [name, ForeignKeyMigrations.options_for_index(options[:index])]
       end
       self
     end
