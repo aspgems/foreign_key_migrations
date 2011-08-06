@@ -14,7 +14,7 @@ task :default => [:create_databases, :spec]
 
 desc 'Run postgresql and mysql tests'
 task :spec do
-  %w[postgresql mysql mysql2 sqlite3].each do |adapter|
+  %w[postgresql mysql mysql2].each do |adapter|
     puts "\n\e[1;33m[#{ENV["BUNDLE_GEMFILE"]}] #{adapter}\e[m\n"
     Rake::Task["#{adapter}:spec"].invoke
   end
