@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/aspgems/foreign_key_migrations.png)](http://travis-ci.org/aspgems/foreign_key_migrations)
+
 Foreign Key Migrations
 ======================
 
