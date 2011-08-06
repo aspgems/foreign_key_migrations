@@ -24,7 +24,7 @@ describe ActiveRecord::Schema do
     it "should create only explicity added indexes" do
       with_auto_index do
         define_schema
-        connection.tables.collect { |table| connection.indexes(table) }.flatten.should have_at_most(1).item
+        connection.tables.collect { |table| connection.indexes(table) }.flatten.should have_at_most(2).item
       end
     end
 
