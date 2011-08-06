@@ -1,13 +1,16 @@
 print "Using PostgreSQL\n"
 require 'logger'
 
+ActiveRecord::Base.logger = Logger.new("debug.log")
+
 ActiveRecord::Base.configurations = {
-  'fkm' => {
+  'postgres' => {
     :adapter => 'postgresql',
-    :database => 'fkm_unittest',
+    :database => 'foreign_key_migrations',
+    :username => 'postgres',
     :min_messages => 'warning'
   }
 
 }
 
-ActiveRecord::Base.establish_connection 'fkm'
+ActiveRecord::Base.establish_connection 'postgres'

@@ -10,34 +10,33 @@ require 'rspec/core/rake_task'
   end
 end
 
+task :default => [:create_databases, :spec]
+
 desc 'Run postgresql and mysql tests'
-task :spec do 
-  %w[postgresql mysql mysql2].each do |adapter|
+task :spec do
+  %w[postgresql mysql mysql2 sqlite3].each do |adapter|
+    puts "\n\e[1;33m[#{ENV["BUNDLE_GEMFILE"]}] #{adapter}\e[m\n"
     Rake::Task["#{adapter}:spec"].invoke
   end
 end
 
-task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "foreign key migrations #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+desc 'Create databases'
+task :create_databases do
+  %w[postgresql mysql].each do |adapter|
+    Rake::Task["#{adapter}:build_databases"].invoke
+  end
 end
 
 namespace :postgresql do
   desc 'Build the PostgreSQL test databases'
   task :build_databases do
-    %x( createdb -E UTF8 fkm_unittest )
+    system "psql -c 'create database foreign_key_migrations;' -U postgres >/dev/null"
+    abort "failed to create postgres database" unless $?.success?
   end
 
   desc 'Drop the PostgreSQL test databases'
   task :drop_databases do
-    %x( dropdb fkm_unittest )
+    %x( dropdb foreign_key_migrations )
   end
 
   desc 'Rebuild the PostgreSQL test databases'
@@ -48,16 +47,16 @@ task :build_postgresql_databases => 'postgresql:build_databases'
 task :drop_postgresql_databases => 'postgresql:drop_databases'
 task :rebuild_postgresql_databases => 'postgresql:rebuild_databases'
 
-MYSQL_DB_USER = 'fkm'
 namespace :mysql do
   desc 'Build the MySQL test databases'
   task :build_databases do
-    %x( echo "create DATABASE fkm_unittest DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci " | mysql --user=#{MYSQL_DB_USER})
+    system "mysql -e 'create database foreign_key_migrations default character set utf8 default collate utf8_unicode_ci;' >/dev/null"
+    abort "failed to create mysql database" unless $?.success?
   end
 
   desc 'Drop the MySQL test databases' 
   task :drop_databases do
-    %x( mysqladmin --user=#{MYSQL_DB_USER} -f drop fkm_unittest )
+    %x( mysqladmin -f drop foreign_key_migrations )
   end
 
   desc 'Rebuild the MySQL test databases'
@@ -67,3 +66,10 @@ end
 task :build_mysql_databases => 'mysql:build_databases'
 task :drop_mysql_databases => 'mysql:drop_databases'
 task :rebuild_mysql_databases => 'mysql:rebuild_databases'
+
+desc 'clobber generated files'
+task :clobber do
+  rm_rf "pkg"
+  rm_rf "tmp"
+  rm    "Gemfile.lock" if File.exist?("Gemfile.lock")
+end

@@ -1,16 +1,16 @@
 print "Using MySQL2\n"
 require 'logger'
 
+ActiveRecord::Base.logger = Logger.new("debug.log")
+
 ActiveRecord::Base.configurations = {
-  'fkm' => {
+  'mysql2' => {
     :adapter => 'mysql2',
-    :database => 'fkm_unittest',
-    :username => 'fkm',
+    :database => 'foreign_key_migrations',
+    :username => (ENV["TRAVIS"] ? '' : 'redhillonrails'),
     :encoding => 'utf8',
-    :socket => '/var/run/mysqld/mysqld.sock',
-    :min_messages => 'warning'
   }
 
 }
 
-ActiveRecord::Base.establish_connection 'fkm'
+ActiveRecord::Base.establish_connection 'mysql2'
