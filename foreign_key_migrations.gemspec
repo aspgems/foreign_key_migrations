@@ -18,7 +18,7 @@ constraints when creating tables or adding columns. It uses SQL-92 syntax and as
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency("aspgems-redhillonrails_core", "~> 2.0.0.beta2")
+  s.add_dependency("aspgems-redhillonrails_core", "~> 2.0.0.beta4")
       
   s.add_development_dependency("rspec", "~> 2.5.0")
   s.add_development_dependency("pg")
